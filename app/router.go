@@ -7,10 +7,6 @@ import (
 	"github.com/semcelik/go-mongo-example/app/handler"
 )
 
-type App struct {
-	Router *mux.Router
-}
-
 func (a *App) Initialize() {
 	fmt.Println("Initializing routes")
 	a.Router = mux.NewRouter()
