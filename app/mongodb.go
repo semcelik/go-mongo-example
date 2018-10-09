@@ -11,7 +11,6 @@ import (
 func (a *App) InitializeDB() {
 	fmt.Println("Initializing db")
 	client, err := mongo.NewClient("mongodb://127.0.0.1:27017")
-	a.Client = client
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -19,13 +18,5 @@ func (a *App) InitializeDB() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	collection := client.Database("userdb").Collection("user")
-	res, err := collection.InsertOne(context.Background(), map[string]string{"hello": "world"})
-	if err != nil {
-		log.Fatal(err)
-	}
-	id := res.InsertedID
-	fmt.Printf("id: %d \n", id)
-	fmt.Println("res: ", res)
+	a.Database = client.Database("userdb")
 }

@@ -7,5 +7,5 @@ import (
 
 type App struct {
 	Router *mux.Router
-	Client *mongo.Client
+	Database *mongo.Database
 }
