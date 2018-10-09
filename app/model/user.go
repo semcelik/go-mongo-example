@@ -1,12 +1,20 @@
 package model
 
 import (
-	"github.com/mongodb/mongo-go-driver/bson/objectid"
+	"github.com/mongodb/mongo-go-driver/bson"
 )
 
 type User struct {
-	ID      objectid.ObjectID `bson:"_id" json:"id,omitempty"`
-	Name    string            `bson:"name" json:"name,omitempty"`
-	Lastname string            `bson:"lastname" json:"hello,omitempty"`
-	Age     int               `bson:"age" json:"age,omitempty"`
+	ID       string  `json:"id,omitempty"`
+	Name     string  `json:"name,omitempty"`
+	LastName string  `json:"lastName,omitempty"`
+	Age      float64 `json:"age,omitempty"`
+}
+
+//BsonToUser is a workaround for return ObjectID as string
+func (u *User) BsonToUser(bson *bson.Document) {
+	u.ID = bson.Lookup("_id").ObjectID().Hex()
+	u.Name = bson.Lookup("name").StringValue()
+	u.LastName = bson.Lookup("lastName").StringValue()
+	u.Age = bson.Lookup("age").Double()
 }
