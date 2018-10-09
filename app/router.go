@@ -15,6 +15,7 @@ func (a *App) Initialize() {
 }
 
 func (a *App) setRouters() {
+	a.Router.HandleFunc("/users", a.CreateUser).Methods("POST")
 	a.Router.HandleFunc("/users", a.GetUsers).Methods("GET")
 	a.Router.HandleFunc("/users/{id}", a.GetUser).Methods("GET")
 }
@@ -25,4 +26,8 @@ func (a *App) GetUsers(w http.ResponseWriter, r *http.Request) {
 
 func (a *App) GetUser(w http.ResponseWriter, r *http.Request) {
 	handler.GetUserHandler(a.Database, w, r)
+}
+
+func (a *App) CreateUser(w http.ResponseWriter, r *http.Request) {
+	handler.CreateUserHandler(a.Database, w, r)
 }

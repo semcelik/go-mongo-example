@@ -70,3 +70,25 @@ func GetUserHandler(db *mongo.Database, w http.ResponseWriter, r *http.Request) 
 	json.NewEncoder(w).Encode(user)
 	return
 }
+
+//CreateUserHandler create user
+func CreateUserHandler(db *mongo.Database, w http.ResponseWriter, r *http.Request) {
+	fmt.Println("In CreateUserHandler")
+
+	userCollection := db.Collection(USER)
+
+	var user model.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	res, err := userCollection.InsertOne(context.Background(), user.ToBson())
+	if err != nil {
+		log.Fatal(err)
+	}
+	id := res.InsertedID.(objectid.ObjectID).Hex()
+
+	response := map[string]string{"insertedId": id}
+	json.NewEncoder(w).Encode(response)
+}
